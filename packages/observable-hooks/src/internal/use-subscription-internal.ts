@@ -39,7 +39,7 @@ export function useSubscriptionInternal<TInput>(
   // synchronously after render being committed
   useIsomorphicLayoutEffect(() => {
     argsRef.current = args
-  })
+  }, [args])
 
   useCustomEffect(() => {
     errorRef.current = null
