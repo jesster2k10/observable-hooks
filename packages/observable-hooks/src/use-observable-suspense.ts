@@ -1,4 +1,4 @@
-import { useDebugValue, useState } from 'react'
+import { useDebugValue, useState, useEffect } from 'react'
 import { useSubscription } from './use-subscription'
 import { useForceUpdate } from './helpers'
 import { ObservableResource } from './observable-resource'
@@ -17,6 +17,10 @@ export function useObservableSuspense<TInput, TOutput extends TInput = TInput>(
   const resourceValue = resource.read()
   const forceUpdate = useForceUpdate()
   const [state, setState] = useState<TOutput>(resourceValue)
+
+  useEffect(() => {
+    setState(resource.read())
+  }, [resource])
 
   useSubscription(resource.shouldUpdate$$, valueRef => {
     // ObservableResource supports Stale-While-Revalidate pattern.
